@@ -1,0 +1,278 @@
+openapi: 3.0.0
+info:
+  title: Digital Art Submission Portal API
+  version: 1.0.0
+  description: API for Artists and Curators with OTP-based authentication, role-based access, and artwork management.
+servers:
+  - url: http://localhost:5000/api
+paths:
+  /user/register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [fullName, email, password, role]
+              properties:
+                fullName:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                role:
+                  type: string
+                  enum: [artist, curator]
+                bio:
+                  type: string
+      responses:
+        '201':
+          description: User registered
+        '400':
+          description: Bad request
+        '409':
+          description: User already exists
+  /user/request-otp:
+    post:
+      summary: Request OTP for login/registration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email]
+              properties:
+                email:
+                  type: string
+      responses:
+        '200':
+          description: OTP sent
+  /user/verify-otp:
+    post:
+      summary: Verify OTP
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, otp]
+              properties:
+                email:
+                  type: string
+                otp:
+                  type: string
+      responses:
+        '200':
+          description: OTP verified
+        '400':
+          description: Invalid or expired OTP
+  /user/login:
+    post:
+      summary: Login with OTP
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, otp]
+              properties:
+                email:
+                  type: string
+                otp:
+                  type: string
+      responses:
+        '200':
+          description: JWT token
+        '400':
+          description: Invalid or expired OTP
+  /user/profile:
+    get:
+      summary: Get user profile (JWT required)
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: User profile
+  /artwork:
+    post:
+      summary: Submit new artwork (artist only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title, imageUrl]
+              properties:
+                title:
+                  type: string
+                imageUrl:
+                  type: string
+                description:
+                  type: string
+                tags:
+                  type: array
+                  items:
+                    type: integer
+      responses:
+        '201':
+          description: Artwork submitted
+        '400':
+          description: Bad request
+        '403':
+          description: Only artists can submit artwork
+    get:
+      summary: List all artworks
+      responses:
+        '200':
+          description: List of artworks
+  /artwork/{id}:
+    get:
+      summary: Get artwork by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Artwork details
+        '404':
+          description: Not found
+  /artwork/{id}/approve:
+    post:
+      summary: Approve artwork (curator only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Artwork approved
+        '403':
+          description: Only curators can approve
+  /artwork/{id}/reject:
+    post:
+      summary: Reject artwork (curator only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Artwork rejected
+        '403':
+          description: Only curators can reject
+  /feedback:
+    post:
+      summary: Leave feedback (curator only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [artworkId, comments, rating]
+              properties:
+                artworkId:
+                  type: integer
+                comments:
+                  type: string
+                rating:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+      responses:
+        '201':
+          description: Feedback submitted
+        '403':
+          description: Only curators can leave feedback
+    get:
+      summary: List all feedback (not implemented, placeholder)
+      responses:
+        '200':
+          description: List of feedback
+  /feedback/artwork/{artworkId}:
+    get:
+      summary: Get feedback for artwork
+      parameters:
+        - in: path
+          name: artworkId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of feedback for artwork
+  /tag:
+    post:
+      summary: Create tag (curator only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name:
+                  type: string
+      responses:
+        '201':
+          description: Tag created
+        '403':
+          description: Only curators can create tags
+    get:
+      summary: List all tags
+      responses:
+        '200':
+          description: List of tags
+  /artwork/upload:
+    post:
+      summary: Upload artwork image to Cloudinary
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Image uploaded
+        '400':
+          description: No file uploaded
+        '500':
+          description: Upload failed
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

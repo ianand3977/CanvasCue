@@ -1,0 +1,105 @@
+<div class="curator-review-container">
+  <h2>Pending Artwork Submissions</h2>
+  <div *ngIf="loading" class="info-msg">Loading...</div>
+  <div *ngIf="error" class="error-msg">{{ error }}</div>
+  <div *ngIf="success" class="success-msg">{{ success }}</div>
+  <div *ngIf="!loading && artworks.length === 0 && !success" class="info-msg">No pending artworks.</div>
+  <div *ngFor="let art of artworks" class="artwork-card">
+    <img [src]="art.image_url" alt="Artwork image" class="art-image" />
+    <div class="art-details">
+      <h3>{{ art.title }}</h3>
+      <p>{{ art.description }}</p>
+      <div class="tags">
+        <span *ngFor="let tag of art.tags" class="tag">{{ tag }}</span>
+      </div>
+      <textarea [(ngModel)]="feedback[art.id]" placeholder="Curator feedback (required for rejection)" [disabled]="submitting[art.id]"></textarea>
+      <div class="actions">
+        <button (click)="approve(art.id)" [disabled]="submitting[art.id]">Approve</button>
+        <button (click)="reject(art.id)" [disabled]="submitting[art.id]">Reject</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.curator-review-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 2rem;
+}
+.artwork-card {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1.5rem;
+}
+.art-image {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+.art-details {
+  flex: 1;
+}
+.tags {
+  margin: 0.5rem 0 1rem 0;
+}
+.tag {
+  display: inline-block;
+  background: #e0e7ff;
+  color: #3730a3;
+  border-radius: 4px;
+  padding: 0.2rem 0.7rem;
+  margin-right: 0.5rem;
+  font-size: 0.9rem;
+}
+textarea {
+  width: 100%;
+  min-height: 60px;
+  margin-bottom: 0.7rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  font-size: 1rem;
+  resize: vertical;
+}
+.actions {
+  display: flex;
+  gap: 1rem;
+}
+button {
+  padding: 0.5rem 1.2rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  background: #6366f1;
+  color: #fff;
+  transition: background 0.2s;
+}
+button[disabled] {
+  background: #c7d2fe;
+  cursor: not-allowed;
+}
+button:last-child {
+  background: #ef4444;
+}
+.info-msg {
+  color: #64748b;
+  margin-bottom: 1rem;
+}
+.error-msg {
+  color: #ef4444;
+  margin-bottom: 1rem;
+}
+.success-msg {
+  color: #22c55e;
+  margin-bottom: 1rem;
+}
+</style>

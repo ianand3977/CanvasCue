@@ -1,0 +1,92 @@
+.curator-review-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 1.25rem;
+  box-shadow: 0 4px 32px rgba(60, 72, 88, 0.12);
+}
+.artwork-card {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+.art-image {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(60, 72, 88, 0.10);
+}
+.art-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.tags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.tag {
+  background: #e2e8f0;
+  color: #4a5568;
+  border-radius: 0.4rem;
+  padding: 0.2rem 0.7rem;
+  font-size: 0.95rem;
+}
+textarea {
+  width: 100%;
+  min-height: 60px;
+  border-radius: 0.4rem;
+  border: 1px solid #cbd5e1;
+  padding: 0.5rem;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+.actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+.actions button {
+  background: linear-gradient(90deg, #38a169 0%, #48bb78 100%);
+  color: #fff;
+  border: none;
+  border-radius: 0.4rem;
+  padding: 0.5rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.actions button:last-child {
+  background: linear-gradient(90deg, #e53e3e 0%, #f56565 100%);
+}
+.actions button:disabled {
+  background: #cbd5e1;
+  color: #a0aec0;
+  cursor: not-allowed;
+}
+.info-msg {
+  color: #4a5568;
+  background: #e2e8f0;
+  border-radius: 0.4rem;
+  padding: 0.5rem 0.75rem;
+  margin-top: 0.5rem;
+  font-size: 0.97rem;
+  text-align: center;
+}
+.error-msg {
+  color: #e53e3e;
+  background: #fff5f5;
+  border: 1px solid #fed7d7;
+  border-radius: 0.4rem;
+  padding: 0.5rem 0.75rem;
+  margin-top: 0.5rem;
+  font-size: 0.97rem;
+  text-align: center;
+}

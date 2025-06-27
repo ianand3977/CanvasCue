@@ -1,0 +1,59 @@
+<div class="dashboard-container">
+  <div class="dashboard-card">
+    <h2>Welcome, <span class="username">{{ username }}</span>!</h2>
+    <p class="dashboard-msg">You are now logged in.</p>
+    <button class="logout-btn" (click)="logout()">Logout</button>
+  </div>
+</div>
+
+<style>
+.dashboard-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(120deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+.dashboard-card {
+  background: #fff;
+  padding: 2.5rem 2rem 2rem 2rem;
+  border-radius: 1.25rem;
+  box-shadow: 0 4px 32px rgba(60, 72, 88, 0.12);
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+.dashboard-card h2 {
+  margin: 0 0 0.5rem 0;
+  font-weight: 600;
+  color: #2d3748;
+  text-align: center;
+}
+.username {
+  color: #5a67d8;
+  font-weight: 700;
+}
+.dashboard-msg {
+  color: #4a5568;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+.logout-btn {
+  background: linear-gradient(90deg, #667eea 0%, #5a67d8 100%);
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.75rem 2.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.logout-btn:hover {
+  background: linear-gradient(90deg, #5a67d8 0%, #667eea 100%);
+}
+</style>

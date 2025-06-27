@@ -1,0 +1,50 @@
+<div class="gallery-container">
+  <h2>Public Art Gallery</h2>
+  <div *ngIf="loading" class="info-msg">Loading artworks...</div>
+  <div *ngIf="error" class="error-msg">{{ error }}</div>
+  <div *ngIf="!loading && artworks.length === 0" class="info-msg">No artworks yet. Be the first to submit!</div>
+
+  <!-- Tag filter dropdown -->
+  <div class="tag-filter">
+    <label for="tagSelect"><b>Filter by Tag:</b></label>
+    <select id="tagSelect" [(ngModel)]="selectedTag" (change)="onTagChange(selectedTag)">
+      <option value="">All</option>
+      <option *ngFor="let tag of tags" [value]="tag">{{ tag }}</option>
+    </select>
+  </div>
+
+  <div class="gallery-grid">
+    <div class="art-card" *ngFor="let art of filteredArtworks" (click)="openModal(art)">
+      <img [src]="art.image_url" alt="Artwork image" class="art-image" />
+      <div class="art-meta">
+        <h3>{{ art.title }}</h3>
+        <div class="tags">
+          <span *ngFor="let tag of art.tags" class="tag">{{ tag }}</span>
+        </div>
+        <div class="artist-credit">By <span class="artist">{{ art.artist_name || 'Unknown Artist' }}</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for full details -->
+  <div class="modal-backdrop" *ngIf="showModal" (click)="closeModal()"></div>
+  <div class="modal" *ngIf="showModal">
+    <button class="close-btn" (click)="closeModal()">&times;</button>
+    <img [src]="selectedArt?.image_url" alt="Artwork image" class="modal-image" />
+    <h2>{{ selectedArt?.title }}</h2>
+    <div class="tags">
+      <span *ngFor="let tag of selectedArt?.tags" class="tag">{{ tag }}</span>
+    </div>
+    <div class="artist-credit">By <span class="artist">{{ selectedArt?.artist_name || 'Unknown Artist' }}</span></div>
+    <p class="desc">{{ selectedArt?.description }}</p>
+    <div class="contact" *ngIf="selectedArt?.artist_email">Contact: <a href="mailto:{{ selectedArt.artist_email }}">{{ selectedArt.artist_email }}</a></div>
+    <div class="actions">
+      <button class="like-btn">&#x2764; Like</button>
+      <button class="comment-btn">💬 Comment</button>
+    </div>
+    <!-- Comments section placeholder -->
+    <div class="comments-section">
+      <p class="comments-placeholder">Comments coming soon...</p>
+    </div>
+  </div>
+</div>

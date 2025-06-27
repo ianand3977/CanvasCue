@@ -1,0 +1,61 @@
+<div class="profile-container">
+  <h2>My Profile</h2>
+  <div *ngIf="loading" class="info-msg">Loading...</div>
+  <div *ngIf="error" class="error-msg">{{ error }}</div>
+  <div *ngIf="user">
+    <div class="account-details">
+      <h3>Account Details</h3>
+      <p><b>Name:</b> {{ user.full_name }}</p>
+      <p><b>Email:</b> {{ user.email }}</p>
+      <p><b>Role:</b> {{ user.role | titlecase }}</p>
+      <p *ngIf="user.bio"><b>Bio:</b> {{ user.bio }}</p>
+    </div>
+    <div *ngIf="role === 'artist'">
+      <h3>My Art Submissions</h3>
+      <div *ngIf="submissions.length === 0" class="info-msg">No submissions yet.</div>
+      <div class="submission-list">
+        <div class="submission-card" *ngFor="let art of submissions">
+          <img [src]="art.image_url" alt="Artwork image" class="art-thumb" />
+          <div class="submission-meta">
+            <h4>{{ art.title }}</h4>
+            <div class="tags">
+              <span *ngFor="let tag of art.tags" class="tag">{{ tag }}</span>
+            </div>
+            <p class="desc">{{ art.description }}</p>
+            <div class="status" [ngClass]="art.status">Status: {{ art.status | titlecase }}</div>
+            <div *ngIf="art.status === 'rejected' && art.feedbacks && art.feedbacks.length > 0" class="feedback">
+              <b>Curator Feedback:</b>
+              <ul>
+                <li *ngFor="let fb of art.feedbacks">{{ fb.comments }}</li>
+              </ul>
+            </div>
+            <div *ngIf="art.status === 'approved'" class="approved-msg">Approved and visible in public gallery!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="role === 'curator'">
+      <h3>Review History</h3>
+      <div *ngIf="reviews.length === 0" class="info-msg">No reviews yet.</div>
+      <div class="review-list">
+        <div class="review-card" *ngFor="let art of reviews">
+          <img [src]="art.image_url" alt="Artwork image" class="art-thumb" />
+          <div class="review-meta">
+            <h4>{{ art.title }}</h4>
+            <div class="tags">
+              <span *ngFor="let tag of art.tags" class="tag">{{ tag }}</span>
+            </div>
+            <p class="desc">{{ art.description }}</p>
+            <div class="status" [ngClass]="art.status">Status: {{ art.status | titlecase }}</div>
+            <div *ngIf="art.feedbacks && art.feedbacks.length > 0" class="feedback">
+              <b>Feedback Given:</b>
+              <ul>
+                <li *ngFor="let fb of art.feedbacks">{{ fb.comments }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
